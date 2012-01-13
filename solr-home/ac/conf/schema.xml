@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+ contributor license agreements.  See the NOTICE file distributed with
+ this work for additional information regarding copyright ownership.
+ The ASF licenses this file to You under the Apache License, Version 2.0
+ (the "License"); you may not use this file except in compliance with
+ the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<!-- This is a sample schema for AutoComplete / AutoSuggest as a Solr core.
+     By Cominvent AS, see www.cominvent.com -->
+
+<schema name="ac-v1.0" version="1.4">
+	<types>
+		<!-- text_suggest : Matches whole terms in the suggest text  -->
+		<fieldType name="text_suggest" class="solr.TextField" positionIncrementGap="100">
+			<analyzer type="index">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.WordDelimiterFilterFactory" 
+					    generateWordParts="1" 
+					    generateNumberParts="1"
+					    catenateWords="1"
+					    catenateNumbers="1"
+					    catenateAll="1"
+					    splitOnCaseChange="1"
+					    splitOnNumerics="1"
+					    preserveOriginal="1"
+				/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement=" " replace="all"/>
+			</analyzer>
+			<analyzer type="query">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.WordDelimiterFilterFactory" 
+					    generateWordParts="0" 
+					    generateNumberParts="0"
+					    catenateWords="0"
+					    catenateNumbers="0"
+					    catenateAll="0"
+					    splitOnCaseChange="0"
+					    splitOnNumerics="0"
+				/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement=" " replace="all"/>
+			</analyzer>
+		</fieldType>
+		<!-- text_phonetic_do : Matches a phonetic version of the suggest text, for a fuzzy effect 
+		     Note that there are other phonetic algorithms as well, but this works pretty well
+		-->
+		<fieldType name="text_phonetic_do" class="solr.TextField" positionIncrementGap="100">
+			<analyzer>
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.DoubleMetaphoneFilterFactory" inject="false"/>
+			</analyzer>
+		</fieldType>
+		<!-- autocomplete_edge : Will match from the left of the field, e.g. if the document field
+		     is "A brown fox" and the query is "A bro", it will match, but not "brown"
+		-->
+		<fieldType name="autocomplete_edge" class="solr.TextField">
+			<analyzer type="index">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.KeywordTokenizerFactory"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([\.,;:-_])" replacement=" " replace="all"/>
+				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="30" minGramSize="1"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+			</analyzer>
+			<analyzer type="query">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.KeywordTokenizerFactory"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([\.,;:-_])" replacement=" " replace="all"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="^(.{30})(.*)?" replacement="$1" replace="all"/>
+			</analyzer>
+		</fieldType>
+		
+		<!-- autocomplete_ngram : Matches any word in the input field, with implicit right truncation.
+		     This means that the field "A brown fox" will be matched by query "bro".
+		     We use this to get partial matches, but these whould be boosted lower than exact and left-anchored
+		-->
+		<fieldType name="autocomplete_ngram" class="solr.TextField">
+			<analyzer type="index">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+			</analyzer>
+			<analyzer type="query">
+				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
+				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="0" generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="0"/>
+				<filter class="solr.LowerCaseFilterFactory"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+				<filter class="solr.PatternReplaceFilterFactory" pattern="^(.{20})(.*)?" replacement="$1" replace="all"/>
+			</analyzer>
+		</fieldType>
+		<!-- Define all the basic field types for consistency -->
+		<fieldType name="string" class="solr.StrField" sortMissingLast="true" omitNorms="true"/>
+		<fieldType name="boolean" class="solr.BoolField" sortMissingLast="true" omitNorms="true"/>
+		<fieldtype name="binary" class="solr.BinaryField"/>
+		<fieldType name="int" class="solr.TrieIntField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="float" class="solr.TrieFloatField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="long" class="solr.TrieLongField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="double" class="solr.TrieDoubleField" precisionStep="0" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="tint" class="solr.TrieIntField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="tfloat" class="solr.TrieFloatField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="tlong" class="solr.TrieLongField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="tdouble" class="solr.TrieDoubleField" precisionStep="8" omitNorms="true" positionIncrementGap="0"/>
+		<fieldType name="date" class="solr.TrieDateField" omitNorms="true" precisionStep="0" positionIncrementGap="0"/>
+		<fieldType name="tdate" class="solr.TrieDateField" omitNorms="true" precisionStep="6" positionIncrementGap="0"/>
+	</types>
+	<fields>
+		<!-- AutoComplete fields
+		     Construct documents containing these fields for all suggestions you like to provide
+		     Then use a dismax query to search on some fields, display some fields and boost others
+		 -->
+		<field name="id" type="string" indexed="true" stored="true" required="true"/>
+		<!-- The main text to return as the suggestion. This is not searched -->
+		<field name="textsuggest" type="text_suggest" indexed="true" stored="true" omitNorms="true" />
+		<!-- An optional sub text to return only, not search -->
+		<field name="subtext" type="string" indexed="false" stored="true"/>
+		<!-- Suggest type/category. Example: person, book, category, keyword -->
+		<field name="type" type="string" indexed="true" stored="true"/>
+		<!-- An image URL for the autosuggest Ajax component to use as thumbnail in the suggestion -->
+		<field name="thumbnail_url" type="string" indexed="false" stored="true"/>
+		<!-- An action code for the autosuggest AJAX-component to act upon.
+		     Example usage could be: "search", "goto", "facet".
+		     Depending on content, the "value" field may be interpreted differently
+		     e.g. if action is "goto", value should be a URL, if "facet", value could be facet filter expression
+		     Of course, the AJAX-component may choose to deduct action from the "type" to simplify things
+		-->
+		<field name="action" type="string" indexed="false" stored="true"/>
+		<!-- Value, to be used if "action" is set -->
+		<field name="value" type="string" indexed="false" stored="true"/>
+		<!-- A value used for boosting. Will determine the "static rank" of a certain suggestion -->
+		<field name="popularity" type="long" indexed="true" stored="true"/>
+		<!-- A variant of textsuggest which only matches from the very left edge -->
+		<copyField source="textsuggest" dest="textnge"/>
+		<field name="textnge" type="autocomplete_edge" indexed="true" stored="false" />
+		<!-- A variant of textsuggest which matches from the left edge of all terms (implicit truncation) -->
+		<copyField source="textsuggest" dest="textng"/>
+		<field name="textng" type="autocomplete_ngram" indexed="true" stored="false" omitNorms="true" omitTermFreqAndPositions="true" />
+		<!-- A phonetic variant if textsuggest -->
+		<copyField source="textsuggest" dest="textphon"/>
+		<field name="textphon" type="text_phonetic_do" indexed="true" stored="false" omitNorms="true" omitTermFreqAndPositions="true" />
+		<field name="extradisplay" type="string" indexed="false" stored="true" omitNorms="true" />
+		<field name="extrasearch" type="text_suggest" indexed="true" stored="true" omitNorms="true" />
+		<field name="phonetic" type="text_phonetic_do" indexed="true" stored="false" omitNorms="true" />
+		<dynamicField name="*_s" type="string" indexed="false" stored="true" omitNorms="true" />
+	</fields>
+	<uniqueKey>id</uniqueKey>
+	<defaultSearchField>textng</defaultSearchField>
+	<solrQueryParser defaultOperator="AND"/>
+</schema>

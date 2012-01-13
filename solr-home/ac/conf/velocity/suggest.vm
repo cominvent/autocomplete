@@ -1,0 +1,20 @@
+#set($all = {})
+#set($order = [])
+#foreach($d in $response.response.response)
+#if(!$list.contains($order,$d.type))
+#set($r = $order.add($d.type))
+#set($r = $all.put($d.type, []))
+#end
+#set($li = $all.get($d.type))
+#set($r = $li.add($d))
+#end
+
+#foreach($o in $order)
+#set($li = $all.get($o))
+#if($li.size() > 0)
+=== $o ===
+#end
+#foreach($d in $li)
+$d.textsuggest ($d.subtext, pop: $d.popularity) [$d.score]
+#end
+#end

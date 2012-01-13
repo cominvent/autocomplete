@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+#### Licensed to the Apache Software Foundation (ASF) http://www.apache.org/licenses/LICENSE-2.0
+#### See http://www.cominvent.com/?p=576 for instructions
+-->
+<!--
+ All (relative) paths are relative to the installation path
+  
+  persistent: Save changes made via the API to this file
+  sharedLib: path to a lib directory that will be shared across all cores
+-->
+<solr persistent="false" sharedLib="lib">
+  <cores adminPath="/admin/cores" >
+    <core name="ac" instanceDir="ac" />
+  </cores>
+</solr>
