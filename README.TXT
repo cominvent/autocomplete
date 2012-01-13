@@ -7,8 +7,8 @@
 AutoComplete example core
 =========================
 This is an example of how to do advanced super-flexible AutoComplete using a
-dedicated Solr core. A blog post detailing the technique is found at
-http://www.cominvent.com/?p=576
+dedicated Solr core. A blog post detailing the autocomplete technique is found 
+at http://www.cominvent.com/?p=576
 
 This code is intended as a template for you to get started. Normally you will copy
 the "ac" folder, holding the configuration of the autocomplete core, into your own
@@ -25,8 +25,9 @@ Quick start
    ./run-solr.sh
 3. In another SHELL window, feed the example data (you need curl)
    ./feed-ac.sh
-4. Goto http://localhost:8983/solr/ac/browse?q=*:* and start typing
-
+4. Goto http://localhost:8983/solr/ac/browse and start typing.
+   The example data is country names and names of large cities from Geonames, and
+   they are boosted by population so if you type 'c' you'll see China on top..
 
 
 About the data set
