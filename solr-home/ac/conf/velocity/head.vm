@@ -24,7 +24,7 @@
   <link rel="stylesheet" href="#{url_for_solr}/admin/file?file=/velocity/jquery.autocomplete.css&contentType=text/css" type="text/css" />
   <script type="text/javascript" src="#{url_for_solr}/admin/file?file=/velocity/jquery.autocomplete.js&contentType=text/javascript"></script>
 
-
+    <!-- This script sets up the autocomplete URL for the search field -->
     <script>
     $(document).ready(function(){
       $("\#q").autocomplete('#{url_for_solr}/select', {  ## backslash escaped #q as that is a macro defined in VM_global_library.vm
@@ -33,12 +33,12 @@
              'wt': 'velocity',
              'qt': 'ac',
              'v.template': 'suggest',
-             'rows': 25
+             'rows': 20
            }
          }
       );
 
-      // http://localhost:8983/solr/terms?terms.fl=name&terms.prefix=i&terms.sort=count
+      // http://localhost:8983/solr/ac/select?qt=ac&wt=velocity&v.template&suggest&rows=25&q=
     });
 
     </script>
