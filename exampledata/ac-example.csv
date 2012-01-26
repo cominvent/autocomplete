@@ -3130,7 +3130,7 @@
 "CI_2877";"Almere Stad";"Europe/Amsterdam";;;"Cities";;;176432;;
 "CI_2878";"Trondheim";"Europe/Oslo";;;"Cities";;;147139;;
 "CI_2879";"Stavanger";"Europe/Oslo";;;"Cities";;;121610;;
-"CI_2880";"Oslo";"Europe/Oslo";;;"Cities";;;580000;;
+"CI_2880";"Oslo";"Europe/Oslo";"tigerstaden";;"Cities";;;580000;;
 "CI_2881";"Bergen";"Europe/Oslo";;;"Cities";;;213585;;
 "CI_2882";"Pokhara";"Asia/Kathmandu";;;"Cities";;;200000;;
 "CI_2883";"Pātan";"Asia/Kathmandu";;;"Cities";;;183310;;
@@ -4026,7 +4026,7 @@
 "CI_3773";"Buffalo";"America/New York";;;"Cities";;;261310;;
 "CI_3774";"East New York";"America/New York";;;"Cities";;;173198;;
 "CI_3775";"Manhattan";"America/New York";;;"Cities";;;1487536;;
-"CI_3776";"New York City";"America/New York";;;"Cities";;;8175133;;
+"CI_3776";"New York City";"America/New York";"big apple";;"Cities";;;8175133;;
 "CI_3777";"Rochester";"America/New York";;;"Cities";;;210565;;
 "CI_3778";"Syracuse";"America/New York";;;"Cities";;;145170;;
 "CI_3779";"Yonkers";"America/New York";;;"Cities";;;195976;;
