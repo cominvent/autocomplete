@@ -29,6 +29,30 @@ Quick start
    The example data is country names and names of large cities from Geonames, and
    they are boosted by population so if you type 'c' you'll see China on top..
 
+Using your own data
+===================
+Of course you want suggestions for your own data. The easiest is to start with the
+exampledata/ac-example.csv file, keep the first line and enter your own data below.
+Here is a short description of the columns and how they are configured to work in
+Solr's schema.xml:
+ id            : Unique id
+ textsuggest   : Main text for matching and display
+ subtext       : Extra text not being searched but displayed in ()
+ extrasearch   : Extra text not being displayed but searched (full words only)
+ extradisplay  : Extra text not being searched, for additional display
+ type          : You may choose your own types, e.g. Country, City.
+                 Each type will be suggested in its own section in the result
+ action        : Optional field to give a hint to Ajax comp about what to do
+                 when suggestion is clicked, e.g. search, jump-to-url etc
+ value         : Optional field to give details about how to execute action
+ popularity    : This number gets boosted into the score for relevancy tuning
+ thumbnail_url : Example of extra data field to be able to display an image
+ phonetic      : If filled, this suggestion will also be matched phonetically
+
+To learn more about how the autoSuggester is built and how to tune further, read 
+the blog post at http://www.cominvent.com/?p=576
+
+
 
 About the data set
 ==================
