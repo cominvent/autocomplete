@@ -359,7 +359,7 @@ $.Autocompleter = function(input, options) {
 	function request(term, success, failure) {
 		if (!options.matchCase)
 			term = term.toLowerCase();
-		var data = cache.load(term);
+		var data = null // cache.load(term);
 		// recieve the cached data
 		if (data && data.length) {
 			success(term, data);
