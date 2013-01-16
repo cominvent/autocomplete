@@ -706,8 +706,8 @@ $.Autocompleter.Select = function (options, input, select, config) {
 		}
 		listItems = list.find("li");
 		if ( options.selectFirst ) {
-			listItems.slice(0, 1).addClass(CLASSES.ACTIVE);
-			active = 0;
+			// listItems.slice(0, 1).addClass(CLASSES.ACTIVE);
+			// active = 0;
 		}
 		// apply bgiframe if available
 		if ( $.fn.bgiframe )
