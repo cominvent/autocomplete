@@ -36,7 +36,11 @@
              'rows': 20
            }
          }
-      );
+     ).keydown(function(e){
+       if (e.keyCode === 13){
+         $("#query-form").trigger('submit');
+       }
+     });
 
       // http://localhost:8983/solr/ac/select?qt=ac&wt=velocity&v.template&suggest&rows=25&q=
     });
