@@ -25,7 +25,7 @@
 		<fieldType name="text_suggest" class="solr.TextField" positionIncrementGap="100">
 			<analyzer type="index">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
 				<filter class="solr.WordDelimiterFilterFactory" 
 					    generateWordParts="1" 
 					    generateNumberParts="1"
@@ -37,11 +37,11 @@
 					    preserveOriginal="1"
 				/>
 				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement=" " replace="all"/>
+				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement=" " replace="all"/-->
 			</analyzer>
 			<analyzer type="query">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-				<tokenizer class="solr.StandardTokenizerFactory"/>
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
 				<filter class="solr.WordDelimiterFilterFactory" 
 					    generateWordParts="0" 
 					    generateNumberParts="0"
@@ -52,7 +52,7 @@
 					    splitOnNumerics="0"
 				/>
 				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement=" " replace="all"/>
+				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement=" " replace="all"/-->
 			</analyzer>
 		</fieldType>
 		<!-- text_phonetic_do : Matches a phonetic version of the suggest text, for a fuzzy effect 
@@ -74,14 +74,14 @@
 				<filter class="solr.LowerCaseFilterFactory"/>
 				<filter class="solr.PatternReplaceFilterFactory" pattern="([\.,;:-_])" replacement=" " replace="all"/>
 				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="30" minGramSize="1"/>
-				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 			</analyzer>
 			<analyzer type="query">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
 				<tokenizer class="solr.KeywordTokenizerFactory"/>
 				<filter class="solr.LowerCaseFilterFactory"/>
 				<filter class="solr.PatternReplaceFilterFactory" pattern="([\.,;:-_])" replacement=" " replace="all"/>
-				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 				<filter class="solr.PatternReplaceFilterFactory" pattern="^(.{30})(.*)?" replacement="$1" replace="all"/>
 			</analyzer>
 		</fieldType>
@@ -93,18 +93,18 @@
 		<fieldType name="autocomplete_ngram" class="solr.TextField">
 			<analyzer type="index">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-				<tokenizer class="solr.StandardTokenizerFactory"/>
-				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="1"/>
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
+				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="1" splitOnCaseChange="1"/>
 				<filter class="solr.LowerCaseFilterFactory"/>
 				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
-				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 			</analyzer>
 			<analyzer type="query">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-				<tokenizer class="solr.StandardTokenizerFactory"/>
-				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="0" generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="0" splitOnCaseChange="0"/>
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
+				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="0" generateNumberParts="0" catenateWords="0" catenateNumbers="0" catenateAll="1" splitOnCaseChange="0"/>
 				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/>
+				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 				<filter class="solr.PatternReplaceFilterFactory" pattern="^(.{20})(.*)?" replacement="$1" replace="all"/>
 			</analyzer>
 		</fieldType>
