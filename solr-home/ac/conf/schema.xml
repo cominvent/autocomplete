@@ -97,7 +97,7 @@
 				<filter class="solr.SynonymFilterFactory" synonyms="syn.txt" ignoreCase="true" expand="true"/>
 				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="1" splitOnCaseChange="1"/>
 				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.ShingleFilterFactory" maxShingleSize="3" outputUnigrams="false"/>
+				<filter class="solr.ShingleFilterFactory" maxShingleSize="10" outputUnigrams="false"/>
 				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
 				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 			</analyzer>
