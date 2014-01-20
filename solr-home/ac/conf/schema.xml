@@ -90,20 +90,20 @@
 		     This means that the field "A brown fox" will be matched by query "bro".
 		     We use this to get partial matches, but these whould be boosted lower than exact and left-anchored
 		-->
-		<fieldType name="autocomplete_ngram" class="solr.TextField">
+		<fieldType name="autocomplete_ngram" class="solr.TextField" autoGeneratePhraseQueries="true">
 			<analyzer type="index">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
 				<tokenizer class="solr.WhitespaceTokenizerFactory"/>
 				<filter class="solr.SynonymFilterFactory" synonyms="syn.txt" ignoreCase="true" expand="true"/>
 				<filter class="solr.WordDelimiterFilterFactory" generateWordParts="1" generateNumberParts="1" catenateWords="0" catenateNumbers="0" catenateAll="1" splitOnCaseChange="1"/>
 				<filter class="solr.LowerCaseFilterFactory"/>
-				<filter class="solr.ShingleFilterFactory" maxShingleSize="10" outputUnigrams="false"/>
+				<filter class="solr.ShingleFilterFactory" maxShingleSize="10" outputUnigrams="true"/>
 				<filter class="solr.EdgeNGramFilterFactory" maxGramSize="20" minGramSize="1"/>
 				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 			</analyzer>
 			<analyzer type="query">
 				<charFilter class="solr.MappingCharFilterFactory" mapping="mapping-ISOLatin1Accent.txt"/>
-				<tokenizer class="solr.KeywordTokenizerFactory"/>				
+				<tokenizer class="solr.WhitespaceTokenizerFactory"/>				
 				<filter class="solr.LowerCaseFilterFactory"/>
 				<!--filter class="solr.PatternReplaceFilterFactory" pattern="([^\w\d\*æøåÆØÅ ])" replacement="" replace="all"/-->
 				<filter class="solr.PatternReplaceFilterFactory" pattern="^(.{20})(.*)?" replacement="$1" replace="all"/>
