@@ -27,7 +27,7 @@
 #
 # 2012-01-02 janhoy modified mappings of norwegian,swedish characters to ø,ö->ø, å->å, æ,ä->æ
 
-# Norwegian mappings
+# Polish mappings
 #
 # 2014-03-18 mariusz-kraj added polish mappings
 
